@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  let noteEntries: any[] = [];
+  try {
+    noteEntries = await getCollection('notes');
+  } catch(e) {
+    console.error('Failed to load notes for paths:', e);
+  }
+  return noteEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const safeDate = new Date(entry.data.date);
+const displayDate = isNaN(safeDate.getTime()) ? 'Unknown Date' : safeDate.toISOString().slice(0, 7).replace('-', '.');
+---
+
+<Layout title={`${entry.data.title} - xxbbm`} description={entry.data.summary}>
+  <article class="full-post">
+    <a href="/#notes" class="back-link">&larr; Back</a>
+    <header style="margin-bottom: 30px;">
+        <span class="post-meta">{displayDate} &middot; {entry.data.category}</span>
+        <h1 class="post-title" style="font-size: 16px;">{entry.data.title}</h1>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Layout>
+
+<style>
+    .back-link { font-size: 11px; color: var(--text-muted); text-decoration: none; display: inline-block; margin-bottom: 20px; transition: color 0.2s; }
+    .back-link:hover { color: var(--accent); }
+    .post-meta { font-size: 11px; font-family: "Times New Roman", Times, serif; font-style: italic; color: var(--text-faint); margin-bottom: 6px; display: block; }
+    .post-title { font-size: 14px; font-weight: 500; color: var(--text-main); margin: 0 0 8px 0; letter-spacing: 0.01em; }
+</style>

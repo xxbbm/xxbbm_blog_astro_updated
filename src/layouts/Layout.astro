@@ -1,0 +1,132 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "留白、呼吸与无声的叙事 / Venture outside your comfort zone" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<title>{title}</title>
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta name="twitter:card" content="summary_large_image" />
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<h1 class="site-title"><a href="/">xxbbm<span class="cursor"></span></a></h1>
+				<p class="site-tagline">Venture outside your comfort zone<br>走出你的舒适区</p>
+				<nav class="nav-links">
+					<a href="/#about" class="hover-underline">About</a>
+					<a href="/#projects" class="hover-underline">Projects</a>
+					<a href="/#notes" class="hover-underline">Notes</a>
+				</nav>
+			</header>
+
+			<main>
+				<slot />
+			</main>
+
+			<footer id="contact">
+				<div class="footer-content">
+					<div class="footer-links">
+						<a href="mailto:andyxxliad@gmail.com" class="hover-underline">Email</a>
+						<span class="separator">/</span>
+						<a href="https://github.com/xxbbm" target="_blank" rel="noopener noreferrer" class="hover-underline">GitHub</a>
+					</div>
+					<p class="footer-copyright">&copy; 2026 xxbbm. Powered by Astro & Silence.</p>
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--bg-color: #fafafa;
+		--text-main: #222222;
+		--text-muted: #666666;
+		--text-faint: #aaaaaa;
+		--border-color: #e0e0e0;
+		--card-bg: #f5f5f5;
+		--accent: #111111;
+		--prose-text: #444444;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--bg-color: #121212;
+			--text-main: #e0e0e0;
+			--text-muted: #999999;
+			--text-faint: #666666;
+			--border-color: #333333;
+			--card-bg: #1a1a1a;
+			--accent: #ffffff;
+			--prose-text: #cccccc;
+		}
+	}
+
+	html { scroll-behavior: smooth; }
+	*, *::before, *::after { box-sizing: border-box; }
+	
+	body { 
+		margin: 0; padding: 0; 
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans CJK SC", sans-serif; 
+		color: var(--text-main); 
+		background-color: var(--bg-color); 
+		line-height: 1.7; 
+		-webkit-font-smoothing: antialiased; 
+		transition: background-color 0.3s ease, color 0.3s ease;
+	}
+	
+	.container { max-width: 600px; margin: 0 auto; padding: 80px 24px; }
+	.section-block { margin-bottom: 70px; }
+	
+	header { margin-bottom: 60px; padding-bottom: 24px; border-bottom: 1px dashed var(--border-color); }
+	.site-title { font-size: 16px; font-weight: 600; letter-spacing: 0.08em; margin: 0 0 8px 0; }
+	.site-title a { color: var(--accent); text-decoration: none; }
+	
+	.cursor { display: inline-block; width: 6px; height: 14px; background-color: var(--text-main); margin-left: 6px; vertical-align: middle; animation: blink 1s infinite steps(1, start); }
+	@keyframes blink { 0%, 100% { background-color: transparent; } 50% { background-color: var(--text-main); } }
+	
+	.site-tagline { font-size: 11px; color: var(--text-muted); margin: 0 0 20px 0; font-style: italic; letter-spacing: 0.02em; line-height: 1.5; }
+	
+	.nav-links { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+	.nav-links a { color: var(--text-muted); text-decoration: none; margin-right: 18px; padding-bottom: 2px; }
+	
+	.hover-underline { position: relative; text-decoration: none; color: inherit; transition: color 0.3s ease; }
+	.hover-underline::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 1px; bottom: 0; left: 0; background-color: currentColor; transform-origin: bottom right; transition: transform 0.3s cubic-bezier(0.65, 0.05, 0.36, 1); }
+	.hover-underline:hover { color: var(--accent); }
+	.hover-underline:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+	
+	.section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-faint); margin-bottom: 30px; font-weight: 500; }
+	
+	footer { margin-top: 100px; padding-top: 40px; border-top: 1px dashed var(--border-color); }
+	.footer-content { display: flex; flex-direction: column; align-items: center; text-align: center; }
+	.footer-links { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+	.footer-links a { color: var(--text-main); padding-bottom: 2px; }
+	.separator { margin: 0 12px; color: var(--border-color); font-weight: 300; }
+	.footer-copyright { margin: 0; font-size: 11px; color: var(--text-faint); letter-spacing: 0.05em; }
+
+	.prose { font-size: 13.5px; color: var(--prose-text); line-height: 1.8; text-align: justify; }
+	.prose p { margin-top: 0; margin-bottom: 16px; }
+	.prose strong { font-weight: 600; color: var(--accent); }
+	.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--border-color); transition: text-decoration-color 0.2s; }
+	.prose a:hover { text-decoration-color: var(--accent); }
+	.prose h2 { font-size: 15px; font-weight: 600; margin: 40px 0 16px 0; color: var(--text-main); }
+	.prose blockquote { margin: 30px 0; padding: 16px 20px; border-left: 2px solid var(--border-color); background-color: var(--card-bg); color: var(--text-muted); font-size: 13px; font-style: italic; }
+	
+	.truncate-summary { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+</style>
