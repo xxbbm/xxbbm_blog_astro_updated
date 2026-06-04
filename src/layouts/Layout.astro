@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
 
 interface Props {
@@ -52,6 +53,7 @@ const { title, description = "留白、呼吸与无声的叙事 / Venture outsid
 				</div>
 			</footer>
 		</div>
+		<Analytics />
 		<SpeedInsights />
 	</body>
 </html>
